@@ -50,7 +50,7 @@ namespace Donnee
             var lesTypesPraticien = chargerLesTypesPraticien(cnx);
             var lesSpecialites = chargerLesSpecialites(cnx);
             var lesFamilles = chargerLesFamilles(cnx);
-            var lesMedicaments = chargerLesMedicaments(cnx, lesFamilles);
+            var lesMedicaments = ChargerLesMedicaments(cnx, lesFamilles);
             var mesVilles = chargerMesVilles(cnx);
             var mesPraticiens = chargerMesPraticiens(cnx, lesTypesPraticien, lesSpecialites);
             var mesVisites = chargerMesVisites(cnx, lesMotifs, mesPraticiens, lesMedicaments);
@@ -77,7 +77,9 @@ namespace Donnee
         /// <returns>nomPrenom de la vue leVisiteur</returns>
         private static string getNomVisiteur(MySqlConnection cnx)
         {
-            return "";
+            string sql = "SELECT nomPrenom FROM leVisiteur;";
+            using MySqlCommand cmd = new MySqlCommand(sql, cnx);
+            return (string)cmd.ExecuteScalar()!;
         }
 
         /// <summary>
@@ -156,7 +158,18 @@ namespace Donnee
         /// <returns>Liste des villes : nom, codePostal</returns>
         private static List<Ville> chargerMesVilles(MySqlConnection cnx)
         {
-           return null;
+            var mesVilles = new List<Ville>();
+            string sql = "SELECT DISTINCT ville, codePostal FROM mesPraticiens ORDER BY ville;";
+            using MySqlCommand cmd = new MySqlCommand(sql, cnx);
+            using MySqlDataReader curseur = cmd.ExecuteReader();
+            while (curseur.Read())
+            {
+                string ville = curseur.GetString("ville");
+                string codePostal = curseur.GetString("codePostal");
+                mesVilles.Add(new Ville(ville, codePostal));
+            }
+
+                return mesVilles;
         }
 
         /// <summary>
@@ -164,18 +177,45 @@ namespace Donnee
         /// </summary>
         /// <param name="lesFamilles">Collection des familles déjà chargées</param>
         /// <returns>Liste des médicaments triés par nom</returns>
-        private static List<Medicament> chargerLesMedicaments(MySqlConnection cnx, List<Famille> lesFamilles)
+        private static List<Medicament> ChargerLesMedicaments(MySqlConnection cnx, List<Famille> lesFamilles)
         {
-            return null;
-        }
+            // liste des medicaments à retourner
+            var lesMedicaments = new List<Medicament>();
+            // Transformons la liste des familles en dictionnaire pour éviter des recherches linéaires O(n)
+            var familles = lesFamilles.ToDictionary(f => f.Id);
 
-         /// <summary>
-		 /// Charge la liste des lesPraticiens associés au visiteur.
-		 /// </summary>
-		 /// <param name="lesTypes">Liste des types de praticien </param>
-		 /// <param name="lesSpecialites">Liste des spécialités</param>
-		 /// <returns>Liste des lesPraticiens</returns>
-		 private static List<Praticien> chargerMesPraticiens(MySqlConnection cnx, List<TypePraticien> lesTypes, List<Specialite> lesSpecialites)
+            string sql = "SELECT id, nom, composition, effets, contreIndication, idFamille FROM medicament ORDER BY nom;";
+            using MySqlCommand cmd = new MySqlCommand(sql, cnx);
+            using MySqlDataReader curseur = cmd.ExecuteReader();
+            // récupération de l'index de la colonne idFamille pour éviter de le rechercher à chaque itération
+            int indexFamille = curseur.GetOrdinal("idFamille");
+
+            // Parcours du curseur
+            while (curseur.Read())
+            {
+                string id = curseur.GetString("id");
+                string nom = curseur.GetString("nom");
+                string composition = curseur.GetString("composition");
+                string effets = curseur.GetString("effets");
+                string contreIndication = curseur.GetString("contreIndication");
+                // Récupération de la famille via le dictionnaire (O(1))
+                Famille famille = familles[curseur.GetString(indexFamille)];
+                var medicament = new Medicament(id, nom, composition, effets, contreIndication, famille);
+                lesMedicaments.Add(medicament);
+                // ajout medicament à sa famille
+                famille.ajouterMedicament(medicament);
+            }
+            return lesMedicaments;
+        }
+        
+
+        /// <summary>
+        /// Charge la liste des lesPraticiens associés au visiteur.
+        /// </summary>
+        /// <param name="lesTypes">Liste des types de praticien </param>
+        /// <param name="lesSpecialites">Liste des spécialités</param>
+        /// <returns>Liste des lesPraticiens</returns>
+        private static List<Praticien> chargerMesPraticiens(MySqlConnection cnx, List<TypePraticien> lesTypes, List<Specialite> lesSpecialites)
 		 {
 			 // Liste qui sera retournée
 			 var mesPraticiens = new List<Praticien>();
@@ -283,7 +323,29 @@ namespace Donnee
         /// <param name="medicaments">Liste des médicaments déjà chargés</param>
         private static void chargerMesEchantillons(MySqlConnection cnx, List<Visite> lesVisites, List<Medicament> lesMedicaments)
         {
+            //transformation de la liste des visites en dictionnaire pour accès rapide O(1)
+            var visites = lesVisites.ToDictionary(v => v.Id);
+            //transformation de la liste des médicaments en dictionnaire pour accès rapide O(1)
+            var medicaments = lesMedicaments.ToDictionary(m => m.Id);
 
+            string sql = "SELECT idVisite, idMedicament, quantite FROM mesEchantillons;";
+            using MySqlCommand cmd = new MySqlCommand(sql, cnx);
+            cmd.CommandType = CommandType.Text;
+
+            cmd.Parameters.Clear();
+            using MySqlDataReader curseur = cmd.ExecuteReader();
+            while (curseur.Read())
+            {
+                int idVisite = curseur.GetInt32("idVisite");
+                string idMedicament = curseur.GetString("idMedicament");
+                int quantite = curseur.GetInt32("quantite");
+                // Accès via dictionnaire (O(1))
+                Visite visite = visites[idVisite];
+                Medicament medicament = medicaments[idMedicament];
+                visite.ajouterEchantillon(medicament, quantite);
+
+
+            }
         }
 
 

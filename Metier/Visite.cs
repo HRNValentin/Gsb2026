@@ -47,7 +47,7 @@ namespace Metier
             lesEchantillons = new SortedDictionary<Medicament, int>();
 
             // mise à jour de la relation bidirectionnelle avec l'objet Praticien
-           
+           LePraticien.ajouteVisite(this);
 
         }
 

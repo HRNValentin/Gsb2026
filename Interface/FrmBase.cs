@@ -92,7 +92,15 @@ namespace Interface
         /// </summary>
         private void ouvrirFormulaire(Form frm)
         {
-           
+            frm.Show();
+
+            if (frm is FrmBase) {
+                this.Hide();
+            }
+            else
+
+                this.Close();
+        
         }
 
         private void parametrerComposant()
