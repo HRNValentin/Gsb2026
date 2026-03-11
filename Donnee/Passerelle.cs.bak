@@ -355,33 +355,9 @@ namespace Donnee
         /// <returns>ID de la nouvelle visite, ou 0 en cas d'erreur</returns>
         static public int ajouterRendezVous(int idPraticien, int idMotif, DateTime uneDate)
         {
-			string sql = "ajouterRendezVous";
-			
-			using MySqlConnection cnx = ouvrirConnexion();
-			
-			using var cmd = new MySqlCommand(sql, cnx);
-			cmd.CommandType = CommandType.StoredProcedure;
-			
-			// passer les paramètres
-			cmd.Parameters.AddWithValue("_idPraticien", idPraticien);
-			cmd.Parameters.AddWithValue("_idMotif", idMotif);
-			cmd.Parameters.AddWithValue("_dateEtHeur", uneDate);
 
-            /*
-			// solution A
-			var paramSortie = new MySqlParameter("_idVisite", MySqlDbType.Int32);
-            paramSortie.Direction = ParameterDirection.Output;
-            cmd.Parameters.Add(paramSortie);
-            cmd.ExecuteNonQuery();
-            return (int) paramSortie.Value!;
-            
-            // solution B
-            return Convert.ToInt32(cmd.ExecuteScalar());
-            */
-            // solution C
-            cmd.ExecuteNonQuery();
-            return Convert.ToInt32(cmd.LastInsertedId);
 
+            return 0;
         }
 
         /// <summary>
