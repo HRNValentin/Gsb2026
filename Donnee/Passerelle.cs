@@ -50,7 +50,11 @@ namespace Donnee
             var lesTypesPraticien = chargerLesTypesPraticien(cnx);
             var lesSpecialites = chargerLesSpecialites(cnx);
             var lesFamilles = chargerLesFamilles(cnx);
+<<<<<<< HEAD
             var lesMedicaments = chargerLesMedicaments(cnx, lesFamilles);
+=======
+            var lesMedicaments = ChargerLesMedicaments(cnx, lesFamilles);
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
             var mesVilles = chargerMesVilles(cnx);
             var mesPraticiens = chargerMesPraticiens(cnx, lesTypesPraticien, lesSpecialites);
             var mesVisites = chargerMesVisites(cnx, lesMotifs, mesPraticiens, lesMedicaments);
@@ -146,12 +150,20 @@ namespace Donnee
             while (curseur.Read())
             {
                 string id = curseur.GetString("id");
+<<<<<<< HEAD
                 string libelle = curseur.GetString("libelle");
                 lesFamilles.Add(new Famille(id, libelle ));
+=======
+                lesFamilles.Add(new Famille(id, curseur.GetString("libelle")));
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
             }
             return lesFamilles;
         }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
         /// <summary>
         /// Charge la liste des villes associées au visiteur.
         /// </summary>
@@ -159,16 +171,29 @@ namespace Donnee
         private static List<Ville> chargerMesVilles(MySqlConnection cnx)
         {
             var mesVilles = new List<Ville>();
+<<<<<<< HEAD
             string sql = "SELECT nom, codePostal FROM mesVilles;";
+=======
+            string sql = "SELECT DISTINCT ville, codePostal FROM mesPraticiens ORDER BY ville;";
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
             using MySqlCommand cmd = new MySqlCommand(sql, cnx);
             using MySqlDataReader curseur = cmd.ExecuteReader();
             while (curseur.Read())
             {
+<<<<<<< HEAD
                 string nom = curseur.GetString("nom");
                 string codePostal = curseur.GetString("codePostal");
                 mesVilles.Add(new Ville(nom, codePostal));
             }
             return mesVilles;
+=======
+                string ville = curseur.GetString("ville");
+                string codePostal = curseur.GetString("codePostal");
+                mesVilles.Add(new Ville(ville, codePostal));
+            }
+
+                return mesVilles;
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
         }
 
         /// <summary>
@@ -176,9 +201,15 @@ namespace Donnee
         /// </summary>
         /// <param name="lesFamilles">Collection des familles déjà chargées</param>
         /// <returns>Liste des médicaments triés par nom</returns>
+<<<<<<< HEAD
         private static List<Medicament> chargerLesMedicaments(MySqlConnection cnx, List<Famille> lesFamilles)
         {
             // Liste à retourner
+=======
+        private static List<Medicament> ChargerLesMedicaments(MySqlConnection cnx, List<Famille> lesFamilles)
+        {
+            // liste des medicaments à retourner
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
             var lesMedicaments = new List<Medicament>();
             // Transformons la liste des familles en dictionnaire pour éviter des recherches linéaires O(n)
             var familles = lesFamilles.ToDictionary(f => f.Id);
@@ -201,11 +232,19 @@ namespace Donnee
                 Famille famille = familles[curseur.GetString(indexFamille)];
                 var medicament = new Medicament(id, nom, composition, effets, contreIndication, famille);
                 lesMedicaments.Add(medicament);
+<<<<<<< HEAD
                 // Ajout du médicament à sa famille
+=======
+                // ajout medicament à sa famille
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
                 famille.ajouterMedicament(medicament);
             }
             return lesMedicaments;
         }
+<<<<<<< HEAD
+=======
+        
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
 
         /// <summary>
         /// Charge la liste des lesPraticiens associés au visiteur.
@@ -321,6 +360,7 @@ namespace Donnee
         /// <param name="medicaments">Liste des médicaments déjà chargés</param>
         private static void chargerMesEchantillons(MySqlConnection cnx, List<Visite> lesVisites, List<Medicament> lesMedicaments)
         {
+<<<<<<< HEAD
 
             // transformation de la liste des visites en dictionnaire pour accès rapide O(1)
             var visites = lesVisites.ToDictionary(v => v.Id);
@@ -331,17 +371,38 @@ namespace Donnee
             string sql = "SELECT idVisite, idMedicament, quantite FROM mesEchantillons;";
 
             using MySqlCommand cmd = new MySqlCommand(sql, cnx);
+=======
+            //transformation de la liste des visites en dictionnaire pour accès rapide O(1)
+            var visites = lesVisites.ToDictionary(v => v.Id);
+            //transformation de la liste des médicaments en dictionnaire pour accès rapide O(1)
+            var medicaments = lesMedicaments.ToDictionary(m => m.Id);
+
+            string sql = "SELECT idVisite, idMedicament, quantite FROM mesEchantillons;";
+            using MySqlCommand cmd = new MySqlCommand(sql, cnx);
+            cmd.CommandType = CommandType.Text;
+
+            cmd.Parameters.Clear();
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
             using MySqlDataReader curseur = cmd.ExecuteReader();
             while (curseur.Read())
             {
                 int idVisite = curseur.GetInt32("idVisite");
                 string idMedicament = curseur.GetString("idMedicament");
                 int quantite = curseur.GetInt32("quantite");
+<<<<<<< HEAD
                 // Récupération de la visite et du médicament via les dictionnaires (O(1))
                 Visite visite = visites[idVisite];
                 Medicament medicament = medicaments[idMedicament];
                 // Ajout de l'échantillon à la visite
                 visite.ajouterEchantillon(medicament, quantite);
+=======
+                // Accès via dictionnaire (O(1))
+                Visite visite = visites[idVisite];
+                Medicament medicament = medicaments[idMedicament];
+                visite.ajouterEchantillon(medicament, quantite);
+
+
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
             }
         }
 
@@ -355,6 +416,7 @@ namespace Donnee
         /// <returns>ID de la nouvelle visite, ou 0 en cas d'erreur</returns>
         static public int ajouterRendezVous(int idPraticien, int idMotif, DateTime uneDate)
         {
+<<<<<<< HEAD
 			string sql = "ajouterRendezVous";
 			
 			using MySqlConnection cnx = ouvrirConnexion();
@@ -382,6 +444,11 @@ namespace Donnee
             cmd.ExecuteNonQuery();
             return Convert.ToInt32(cmd.LastInsertedId);
 
+=======
+
+
+            return 0;
+>>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
         }
 
         /// <summary>
