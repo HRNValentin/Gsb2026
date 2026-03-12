@@ -1,8 +1,6 @@
 ﻿using Metier;
-<<<<<<< HEAD
 using System.Data;
 using Donnee;
-=======
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +8,6 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
 
 namespace Interface
 {
@@ -21,7 +18,7 @@ namespace Interface
             InitializeComponent();
         }
 
-<<<<<<< HEAD
+
         # region procédures événementielles
 
 
@@ -309,11 +306,10 @@ namespace Interface
         #endregion
 
 
-=======
         private void FrmVisiteAjout_Load(object sender, EventArgs e)
         {
             lblTitre.Text = "Ajouter une visite";
         }
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
+
     }
 }
