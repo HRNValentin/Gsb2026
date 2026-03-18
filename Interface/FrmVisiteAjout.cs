@@ -53,11 +53,13 @@ namespace Interface
             cbxPraticien.DisplayMember = "NomPrenom";
             cbxPraticien.ValueMember = "Id";
             cbxPraticien.SelectedIndex = 0;
-
+            // empecher la saisie dans la zone de liste
+            cbxPraticien.DropDownStyle = ComboBoxStyle.DropDownList;
             // alimentation de la zone de liste des motifs
             cbxMotif.DataSource = session.LesMotifs;
             cbxMotif.DisplayMember = "Libelle";
             cbxMotif.ValueMember = "Id";
+            cbxMotif.DropDownStyle = ComboBoxStyle.DropDownList;
 
             // paramétrage du datagridview
             parametrerDgv(dgvVisites);
@@ -253,31 +255,37 @@ namespace Interface
         // enregistrer la visite
         private void ajout()
         {
-            // vérifier le praticien
-            if (cbxPraticien.SelectedItem == null)
-            {
-                MessageBox.Show("Veuillez sélectionner un praticien.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // vérifier le motif
-            if (cbxMotif.SelectedItem == null)
-            {
-                MessageBox.Show("Veuillez sélectionner un motif.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
 
             // vérifier la date et l'heure
-            if (dtpDate.Value < DateTime.Now)
+            if (dtpDate.Value < DateTime.Now.AddHours(1))
             {
                 MessageBox.Show("Veuillez sélectionner une date et une heure futures.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // vérifier si c'est un dimanche
+            if (dtpDate.Value.DayOfWeek == DayOfWeek.Sunday)
+            {
+                MessageBox.Show("Veuillez sélectionner une date qui n'est pas un dimanche.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            // vérifier l'heure entre 8 h et 19 h 
+            if (dtpDate.Value.Hour < 8 || dtpDate.Value.Hour >= 19)
+            {
+                MessageBox.Show("Veuillez sélectionner une heure entre 8 h et 19 h.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            // vérifier les conflits de rendez-vous pour le même praticien
+            Praticien p = (Praticien)cbxPraticien.SelectedItem;
+            if (session.MesVisites.Any(v => v.LePraticien == p && v.Bilan is null))
+            {
+                MessageBox.Show("Le praticien sélectionné a déjà un rendez-vous programmé.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             try
             {
                 // récupérer les données saisies
-                Praticien p = (Praticien)cbxPraticien.SelectedItem;
                 Motif m = (Motif)cbxMotif.SelectedItem;
                 DateTime date = dtpDate.Value;
 
@@ -310,5 +318,6 @@ namespace Interface
 
 
 
+        
     }
 }

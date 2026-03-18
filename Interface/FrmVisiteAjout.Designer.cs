@@ -116,6 +116,7 @@
             btnAjouter.TabIndex = 4;
             btnAjouter.Text = "Ajouter";
             btnAjouter.UseVisualStyleBackColor = false;
+           
             // 
             // dtpDate
             // 
@@ -195,6 +196,7 @@
             Location = new Point(0, 0);
             Name = "FrmVisiteAjout";
             Text = "FrmVisiteAjout";
+            Load += FrmVisiteAjout_Load;
             Controls.SetChildIndex(lblTitre, 0);
             Controls.SetChildIndex(panelDroite, 0);
             Controls.SetChildIndex(panelGauche, 0);

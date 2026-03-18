@@ -333,10 +333,6 @@ namespace Donnee
             string sql = "SELECT idVisite, idMedicament, quantite FROM mesEchantillons;";
 
             using MySqlCommand cmd = new MySqlCommand(sql, cnx);
-
-            cmd.CommandType = CommandType.Text;
-
-            cmd.Parameters.Clear();
             using MySqlDataReader curseur = cmd.ExecuteReader();
             while (curseur.Read())
             {
