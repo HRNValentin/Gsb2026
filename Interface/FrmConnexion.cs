@@ -135,12 +135,8 @@ namespace Interface {
                     lblErreurConnexion.Text = "Vos identifiants sont incorrects.";
                 } else
                 {
-<<<<<<< HEAD
                     // lblErreurConnexion.Text = "Problème lors de la tentative de connexion au serveur.\nPrière de contacter le service informatique.";
                     lblErreurConnexion.Text = e.Message;
-=======
-                    lblErreurConnexion.Text = "Problème lors de la tentative de connexion au serveur.\nPrière de contacter le service informatique.";
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
                 }
 
                 lblErreurConnexion.Visible = true;

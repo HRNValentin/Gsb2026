@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-<<<<<<< HEAD
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmVisiteAjout));
             panelDroite = new Panel();
@@ -49,16 +48,12 @@
             panel2.SuspendLayout();
             panelGauche.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvVisites).BeginInit();
-=======
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmVisiteAjout));
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
             SuspendLayout();
             // 
             // lblTitre
             // 
             lblTitre.Size = new Size(800, 74);
             // 
-<<<<<<< HEAD
             // panelDroite
             // 
             panelDroite.Controls.Add(panel2);
@@ -188,25 +183,18 @@
             contextMenuStrip1.Name = "contextMenuStrip1";
             contextMenuStrip1.Size = new Size(61, 4);
             // 
-=======
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
             // FrmVisiteAjout
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-<<<<<<< HEAD
             Controls.Add(panelGauche);
             Controls.Add(panelDroite);
-=======
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
             Location = new Point(0, 0);
             Name = "FrmVisiteAjout";
             Text = "FrmVisiteAjout";
-            Load += FrmVisiteAjout_Load;
-<<<<<<< HEAD
             Controls.SetChildIndex(lblTitre, 0);
             Controls.SetChildIndex(panelDroite, 0);
             Controls.SetChildIndex(panelGauche, 0);
@@ -215,14 +203,11 @@
             panel2.PerformLayout();
             panelGauche.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvVisites).EndInit();
-=======
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
-<<<<<<< HEAD
 
         private Panel panelDroite;
         private Panel panelGauche;
@@ -238,7 +223,5 @@
         private Button btnAjouter;
         private DateTimePicker dtpDate;
         private Label label5;
-=======
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
     }
 }

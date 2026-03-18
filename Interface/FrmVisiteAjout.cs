@@ -303,13 +303,12 @@ namespace Interface
             }
         }
 
+
+
+
         #endregion
 
 
-        private void FrmVisiteAjout_Load(object sender, EventArgs e)
-        {
-            lblTitre.Text = "Ajouter une visite";
-        }
 
     }
 }

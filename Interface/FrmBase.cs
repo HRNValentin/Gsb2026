@@ -52,13 +52,9 @@ namespace Interface
         }
 
         private void modifierRendezVous_Click(object sender, EventArgs e)
-        {
-<<<<<<< HEAD
+        { 
             ouvrirFormulaire(new FrmVisiteModification(session));
-=======
-             ouvrirFormulaire(new FrmVisiteModification(session));
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
-        }
+    }
 
         private void imprimerRendezvous_Click(object sender, EventArgs e)
         {
@@ -100,7 +96,6 @@ namespace Interface
         private void ouvrirFormulaire(Form frm)
         {
             frm.Show();
-<<<<<<< HEAD
 
             if (this is FrmMenu)
             {
@@ -109,17 +104,7 @@ namespace Interface
             {
                 this.Close();
             }
-=======
-            if (this is FrmMenu)
-            {
-                this.Hide();
-            }
-            else
-            {
-                this.Close();
-            }
-            
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
+        
         }
 
         private void parametrerComposant()

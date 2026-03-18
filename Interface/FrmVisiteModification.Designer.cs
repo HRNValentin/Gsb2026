@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmVisiteModification));
-<<<<<<< HEAD
             this.SuspendLayout();
             // 
             // lblTitre
@@ -49,7 +48,6 @@
             Load += this.FrmVisiteModification_Load;
             this.ResumeLayout(false);
             this.PerformLayout();
-=======
             SuspendLayout();
             // 
             // lblTitre
@@ -69,7 +67,6 @@
             Load += FrmVisiteModification_Load;
             ResumeLayout(false);
             PerformLayout();
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
         }
 
         #endregion

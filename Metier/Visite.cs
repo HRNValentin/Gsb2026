@@ -47,12 +47,7 @@ namespace Metier
             lesEchantillons = new SortedDictionary<Medicament, int>();
 
             // mise à jour de la relation bidirectionnelle avec l'objet Praticien
-<<<<<<< HEAD
             LePraticien.ajouteVisite(this);
-=======
-           LePraticien.ajouteVisite(this);
-
->>>>>>> 08dd9e2abfa9f25a78bd2e81d1815998982a6865
         }
 
         // méthode enregistrerBilan : alimente les propriétés Bilan, PremierMedicament, SecondMedicament
