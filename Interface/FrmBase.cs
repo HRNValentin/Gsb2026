@@ -63,7 +63,7 @@ namespace Interface
 
         private void enregistrerBilan_Click(object sender, EventArgs e)
         {
-            // ouvrirFormulaire(new FrmVisiteBilan(session));
+            ouvrirFormulaire(new FrmVisiteBilan(session));
         }
 
         private void consulterVisite_Click(object sender, EventArgs e)
@@ -115,9 +115,10 @@ namespace Interface
             // Supprimer les marges d'images des ToolStripMenuItem pour un rendu plus épuré
             supprimerImageMargin();
 
-            if (!DesignMode)
+            // Ne pas accéder à 'session' lors du mode concepteur (évite les erreurs du Designer)
+            if (session != null)
             {
-                lblVisiteur.Text = session!.NomVisiteur;
+                lblVisiteur.Text = session.NomVisiteur;
 
                 // Activation / désactivation des menus selon la session
 

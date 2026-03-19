@@ -411,8 +411,58 @@ namespace Donnee
         /// <param name="uneVisite">Visite à enregistrer</param>
         static public void enregistrerBilan(Visite uneVisite)
         {
+            using MySqlConnection cnx = ouvrirConnexion();
 
+            // démarrer une transaction pour garantir l'unicité de l'opération
+            using MySqlTransaction uneTransaction = cnx.BeginTransaction();
+            try
+            {
+                // mise à jour de la table des visites : bilan, premierMedicament, secondMedicament
+                using (var cmd = new MySqlCommand("UPDATE mesVisites SET bilan = @bilan, premierMedicament = @premier, secondMedicament = @second WHERE id = @id", cnx, uneTransaction))
+                {
+                    cmd.Parameters.AddWithValue("@bilan", (object?)uneVisite.Bilan ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@premier", (object?)uneVisite.PremierMedicament?.Id ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@second", (object?)uneVisite.SecondMedicament?.Id ?? DBNull.Value);
+                    cmd.Parameters.AddWithValue("@id", uneVisite.Id);
+                    cmd.ExecuteNonQuery();
+                }
 
+                // supprimer les enregistrements existants d'échantillons pour cette visite
+                using (var cmdDel = new MySqlCommand("DELETE FROM mesEchantillons WHERE idVisite = @idVisite", cnx, uneTransaction))
+                {
+                    cmdDel.Parameters.AddWithValue("@idVisite", uneVisite.Id);
+                    cmdDel.ExecuteNonQuery();
+                }
+
+                // insérer les échantillons (0 à n) depuis la collection de la visite
+                using (var cmdIns = new MySqlCommand("INSERT INTO mesEchantillons (idVisite, idMedicament, quantite) VALUES (@idVisite, @idMedicament, @quantite)", cnx, uneTransaction))
+                {
+                    var pIdVisite = cmdIns.Parameters.Add("@idVisite", MySqlDbType.Int32);
+                    var pIdMed = cmdIns.Parameters.Add("@idMedicament", MySqlDbType.VarChar);
+                    var pQuant = cmdIns.Parameters.Add("@quantite", MySqlDbType.Int32);
+
+                    // Visite implémente IEnumerable<KeyValuePair<Medicament,int>>
+                    foreach (var kv in uneVisite)
+                    {
+                        pIdVisite.Value = uneVisite.Id;
+                        pIdMed.Value = kv.Key.Id;
+                        pQuant.Value = kv.Value;
+                        cmdIns.ExecuteNonQuery();
+                    }
+                }
+
+                // valider la transaction
+                uneTransaction.Commit();
+            }
+            catch
+            {
+                try
+                {
+                    uneTransaction.Rollback();
+                }
+                catch { }
+                throw;
+            }
         }
 
         /// <summary>

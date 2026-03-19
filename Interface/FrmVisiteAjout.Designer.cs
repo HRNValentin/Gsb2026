@@ -116,6 +116,7 @@
             btnAjouter.TabIndex = 4;
             btnAjouter.Text = "Ajouter";
             btnAjouter.UseVisualStyleBackColor = false;
+            btnAjouter.Click += btnAjouter_Click;
            
             // 
             // dtpDate

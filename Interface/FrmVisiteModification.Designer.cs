@@ -65,7 +65,6 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(337, 307);
             panel2.TabIndex = 13;
-            panel2.Paint += panel2_Paint;
             // 
             // button1
             // 
@@ -76,6 +75,7 @@
             button1.TabIndex = 7;
             button1.Text = "Ajouter";
             button1.UseVisualStyleBackColor = false;
+            button1.Click += button1_Click;
             // 
             // dateTimePicker2
             // 
@@ -159,6 +159,7 @@
             dataGridView1.Name = "dataGridView1";
             dataGridView1.Size = new Size(463, 292);
             dataGridView1.TabIndex = 1;
+            dataGridView1.SelectionChanged += dataGridView1_SelectionChanged;
             // 
             // label6
             // 
