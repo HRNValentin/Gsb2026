@@ -36,6 +36,20 @@ namespace Interface
                                    .ToList();
             }
 
+            // si aucune visite ne correspond, afficher un message et masquer la zone de saisie
+            if (lesVisites == null || lesVisites.Count == 0)
+            {
+                message.Text = "Aucun rendez-vous planifié pour le moment.";
+                panelSaisie.Visible = false;
+            }
+            else
+            {
+                // restaurer les libellés par défaut et afficher la zone de saisie
+                message.Text = "Du";
+                messageInterval.Text = "Au";
+                panelSaisie.Visible = true;
+            }
+
             // paramétrage des composants spécifiques à ce formulaire
             parametrerComposant();
         }
