@@ -76,7 +76,6 @@
             label2.Size = new Size(38, 15);
             label2.TabIndex = 2;
             label2.Text = "label2";
-            label2.Click += label2_Click;
             // 
             // label1
             // 
@@ -86,7 +85,6 @@
             label1.Size = new Size(38, 15);
             label1.TabIndex = 1;
             label1.Text = "label1";
-            label1.Click += label1_Click;
             // 
             // textBox1
             // 
@@ -95,7 +93,6 @@
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(286, 146);
             textBox1.TabIndex = 0;
-            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // panel5
             // 

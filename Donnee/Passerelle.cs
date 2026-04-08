@@ -5,6 +5,7 @@
 
 using MySqlConnector;
 using System.Data;
+using System.IO;
 using Metier;
 
 namespace Donnee
@@ -147,7 +148,7 @@ namespace Donnee
             {
                 string id = curseur.GetString("id");
                 string libelle = curseur.GetString("libelle");
-                lesFamilles.Add(new Famille(id, libelle ));
+                lesFamilles.Add(new Famille(id, libelle));
                 // lesFamilles.Add(new Famille(curseur.GetString("id"), curseur.GetString("libelle")));
             }
             return lesFamilles;
@@ -179,7 +180,7 @@ namespace Donnee
         /// <returns>Liste des médicaments triés par nom</returns>
         private static List<Medicament> chargerLesMedicaments(MySqlConnection cnx, List<Famille> lesFamilles)
         {
-        
+
             // liste des medicaments à retourner
             var lesMedicaments = new List<Medicament>();
             // Transformons la liste des familles en dictionnaire pour éviter des recherches linéaires O(n)
@@ -216,47 +217,47 @@ namespace Donnee
         /// <param name="lesSpecialites">Liste des spécialités</param>
         /// <returns>Liste des lesPraticiens</returns>
         private static List<Praticien> chargerMesPraticiens(MySqlConnection cnx, List<TypePraticien> lesTypes, List<Specialite> lesSpecialites)
-		 {
-			 // Liste qui sera retournée
-			 var mesPraticiens = new List<Praticien>();
+        {
+            // Liste qui sera retournée
+            var mesPraticiens = new List<Praticien>();
 
-			 // Transformons les listes des types et spécialités en dictionnaires pour éviter des recherches linéaires O(n)
-			 var types = lesTypes.ToDictionary(t => t.Id);
-			 var specialites = lesSpecialites.ToDictionary(s => s.Id);
+            // Transformons les listes des types et spécialités en dictionnaires pour éviter des recherches linéaires O(n)
+            var types = lesTypes.ToDictionary(t => t.Id);
+            var specialites = lesSpecialites.ToDictionary(s => s.Id);
 
-			 string sql = "SELECT id, nom, prenom, rue, codePostal, ville, email, telephone, idType, idSpecialite FROM mespraticiens;";
-			 using MySqlCommand cmd = new MySqlCommand(sql, cnx);
-			 using MySqlDataReader curseur = cmd.ExecuteReader();
+            string sql = "SELECT id, nom, prenom, rue, codePostal, ville, email, telephone, idType, idSpecialite FROM mespraticiens;";
+            using MySqlCommand cmd = new MySqlCommand(sql, cnx);
+            using MySqlDataReader curseur = cmd.ExecuteReader();
 
-			 // récupération des index des colonnes pour éviter de les rechercher à chaque itération
-			 int indexSpecialite = curseur.GetOrdinal("idSpecialite");
+            // récupération des index des colonnes pour éviter de les rechercher à chaque itération
+            int indexSpecialite = curseur.GetOrdinal("idSpecialite");
 
-			 while (curseur.Read())
-			 {
-				 // Récupération du type via le dictionnaire (O(1))
-				 string idType = curseur.GetString("idType");
-				 TypePraticien? type = null;
-				 types.TryGetValue(idType, out type);
+            while (curseur.Read())
+            {
+                // Récupération du type via le dictionnaire (O(1))
+                string idType = curseur.GetString("idType");
+                TypePraticien? type = null;
+                types.TryGetValue(idType, out type);
 
-				 // La spécialité peut être null, il faut vérifier avant de tenter de la récupérer
-				 Specialite? specialite = curseur.IsDBNull(indexSpecialite) ? null : specialites[curseur.GetString(indexSpecialite)];
+                // La spécialité peut être null, il faut vérifier avant de tenter de la récupérer
+                Specialite? specialite = curseur.IsDBNull(indexSpecialite) ? null : specialites[curseur.GetString(indexSpecialite)];
 
-				 // Création du praticien
-				 mesPraticiens.Add(new Praticien(
-					 curseur.GetInt32("id"),
-					 curseur.GetString("nom"),
-					 curseur.GetString("prenom"),
-					 curseur.GetString("rue"),
-					 curseur.GetString("codePostal"),
-					 curseur.GetString("ville"),
-					 curseur.GetString("email"),
-					 curseur.GetString("telephone"),
-					 type,
-					 specialite));
-			 }
+                // Création du praticien
+                mesPraticiens.Add(new Praticien(
+                    curseur.GetInt32("id"),
+                    curseur.GetString("nom"),
+                    curseur.GetString("prenom"),
+                    curseur.GetString("rue"),
+                    curseur.GetString("codePostal"),
+                    curseur.GetString("ville"),
+                    curseur.GetString("email"),
+                    curseur.GetString("telephone"),
+                    type,
+                    specialite));
+            }
 
-			 return mesPraticiens;
-		 }
+            return mesPraticiens;
+        }
 
 
         /// <summary>
@@ -359,24 +360,46 @@ namespace Donnee
         /// <returns>ID de la nouvelle visite, ou 0 en cas d'erreur</returns>
         static public int ajouterRendezVous(int idPraticien, int idMotif, DateTime uneDate)
         {
-			string sql = "ajouterRendezVous";
-			
-			using MySqlConnection cnx = ouvrirConnexion();
-			
-			using var cmd = new MySqlCommand(sql, cnx);
-			cmd.CommandType = CommandType.StoredProcedure;
-			
-			// passer les paramètres
-			cmd.Parameters.AddWithValue("_idPraticien", idPraticien);
-			cmd.Parameters.AddWithValue("_idMotif", idMotif);
-			cmd.Parameters.AddWithValue("_dateEtHeur", uneDate);
-            
+            string sql = "ajouterRendezVous";
+
+            using MySqlConnection cnx = ouvrirConnexion();
+
+            using var cmd = new MySqlCommand(sql, cnx);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            // passer les paramètres
+            cmd.Parameters.AddWithValue("_idPraticien", idPraticien);
+            cmd.Parameters.AddWithValue("_idMotif", idMotif);
+            cmd.Parameters.AddWithValue("_dateEtHeur", uneDate);
+
             /*
 			// solution A
 			var paramSortie = new MySqlParameter("_idVisite", MySqlDbType.Int32);
             paramSortie.Direction = ParameterDirection.Output;
             cmd.Parameters.Add(paramSortie);
-            cmd.ExecuteNonQuery();
+            try
+            {
+                int rows = cmd.ExecuteNonQuery();
+                // log success
+                try
+                {
+                    Directory.CreateDirectory("Logs");
+                    string log = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] modifierPraticien id={lePraticien.Id} rows={rows} nom='{lePraticien.Nom}' prenom='{lePraticien.Prenom}'\n";
+                    File.AppendAllText(Path.Combine("Logs", "db_updates.log"), log);
+                }
+                catch { }
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    Directory.CreateDirectory("Logs");
+                    string log = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR modifierPraticien id={lePraticien.Id} message='{ex.Message.Replace("\n", " ")}'\n";
+                    File.AppendAllText(Path.Combine("Logs", "db_updates.log"), log);
+                }
+                catch { }
+                throw;
+            }
             return (int) paramSortie.Value!;
             
             // solution B
@@ -480,7 +503,24 @@ namespace Donnee
         /// <returns>ID du nouveau praticien</returns>
         static public int ajouterPraticien(string nom, string prenom, string rue, string codePostal, string ville, string telephone, string email, string unType, string uneSpecialite)
         {
-            return 0;
+            using MySqlConnection cnx = ouvrirConnexion();
+
+            using MySqlCommand cmd = new MySqlCommand("ajouterPraticien", cnx);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@nom", nom);
+            cmd.Parameters.AddWithValue("@prenom", prenom);
+            cmd.Parameters.AddWithValue("@rue", rue);
+            cmd.Parameters.AddWithValue("@codePostal", codePostal);
+            cmd.Parameters.AddWithValue("@ville", ville);
+            cmd.Parameters.AddWithValue("@telephone", telephone);
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@type", unType);
+            cmd.Parameters.AddWithValue("@specialite", uneSpecialite);
+
+            // si ta procédure retourne l'id
+            object result = cmd.ExecuteScalar();
+            return result != null ? Convert.ToInt32(result) : 0;
         }
 
         /// <summary>
@@ -490,18 +530,36 @@ namespace Donnee
         /// <param name="lePraticien">Objet Praticien contenant les nouvelles informations</param>
         static public void modifierPraticien(Praticien lePraticien)
         {
+            using MySqlConnection cnx = ouvrirConnexion();
+
+            using MySqlCommand cmd = new MySqlCommand("modifierPraticien", cnx);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            // Add parameters in the exact order and with the exact names expected by the stored procedure
+            cmd.Parameters.AddWithValue("_id", lePraticien.Id);
+            cmd.Parameters.AddWithValue("_nom", lePraticien.Nom ?? string.Empty);
+            cmd.Parameters.AddWithValue("_prenom", lePraticien.Prenom ?? string.Empty);
+            cmd.Parameters.AddWithValue("_rue", lePraticien.Rue ?? string.Empty);
+            cmd.Parameters.AddWithValue("_codePostal", lePraticien.CodePostal ?? string.Empty);
+            cmd.Parameters.AddWithValue("_ville", lePraticien.Ville ?? string.Empty);
+            cmd.Parameters.AddWithValue("_telephone", lePraticien.Telephone ?? string.Empty);
+            cmd.Parameters.AddWithValue("_email", lePraticien.Email ?? string.Empty);
+            cmd.Parameters.AddWithValue("_idType", lePraticien.Type != null ? (object)lePraticien.Type.Id : DBNull.Value);
+            cmd.Parameters.AddWithValue("_idSpecialite", lePraticien.Specialite != null ? (object)lePraticien.Specialite.Id : DBNull.Value);
+
+            cmd.ExecuteNonQuery();
         }
 
-        /// <summary>
-        /// Supprime un praticien de la base de données.
-        /// </summary>
-        /// <param name="id">ID du praticien à supprimer</param>
         static public void supprimerPraticien(int id)
         {
+            using MySqlConnection cnx = ouvrirConnexion();
+
+            using MySqlCommand cmd = new MySqlCommand("supprimerPraticien", cnx);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("_id", id); // correspond au paramètre de la procédure
+
+            cmd.ExecuteNonQuery();
         }
-
-      
-
-
     }
 }

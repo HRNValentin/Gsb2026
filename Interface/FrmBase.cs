@@ -78,12 +78,12 @@ namespace Interface
 
         private void nouveauPraticien_Click(object sender, EventArgs e)
         {
-            // ouvrirFormulaire(new FrmPraticienAjout(session));
+             ouvrirFormulaire(new FrmPraticienAjout(session));
         }
 
         private void modifierPraticien_Click(object sender, EventArgs e)
         {
-            // ouvrirFormulaire(new FrmPraticienModification(session));
+             ouvrirFormulaire(new FrmPraticienModification(session));
         }
 
         #endregion
@@ -107,7 +107,7 @@ namespace Interface
         
         }
 
-        private void parametrerComposant()
+        protected virtual void parametrerComposant()
         {
             Text = "Laboratoire pharmaceutique Galaxy-Swiss Bourdin - Gestion des visites";
             this.Icon = Properties.Resources.iconeGSB;
