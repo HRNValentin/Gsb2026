@@ -58,13 +58,32 @@ namespace Interface
         private void dataGridView1_SelectionChanged(object? sender, EventArgs e)
         {
             // quand la sélection change, afficher la date/heure du rendez-vous dans les dateTimePicker
-            if (dataGridView1.SelectedRows.Count == 0) return;
+            // et afficher le nom du praticien ainsi que la date complète dans lblNom et lblDate
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                // effacer les champs si aucune sélection
+                lblNom.Text = string.Empty;
+                lblDate.Text = string.Empty;
+                return;
+            }
+
             var row = dataGridView1.SelectedRows[0];
             var valeur = row.Cells["Visite"].Value;
             if (valeur is Visite visite)
             {
                 dateTimePicker1.Value = visite.DateEtHeure.Date;
                 dateTimePicker2.Value = visite.DateEtHeure;
+
+                // afficher le nom du praticien (sécurisé si null)
+                lblNom.Text = visite.LePraticien?.NomPrenom ?? string.Empty;
+
+                // afficher la date et l'heure complètes dans un format lisible
+                lblDate.Text = visite.DateEtHeure.ToString("f");
+            }
+            else
+            {
+                lblNom.Text = string.Empty;
+                lblDate.Text = string.Empty;
             }
         }
         private void FrmVisiteModification_Load(object sender, EventArgs e)

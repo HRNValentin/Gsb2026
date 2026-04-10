@@ -37,10 +37,12 @@
             panelSaisie = new Panel();
             dtpFin = new DateTimePicker();
             dtpDebut = new DateTimePicker();
-            messageInterval = new Label();
-            message = new Label();
+            label2 = new Label();
+            label = new Label();
             imgImprimer = new PictureBox();
             imgApercu = new PictureBox();
+            messageIntervale = new Label();
+            message = new Label();
             panelCentral.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)imgGsb).BeginInit();
             panelSaisie.SuspendLayout();
@@ -88,10 +90,11 @@
             // 
             // panelSaisie
             // 
+            panelSaisie.Controls.Add(messageIntervale);
             panelSaisie.Controls.Add(dtpFin);
             panelSaisie.Controls.Add(dtpDebut);
-            panelSaisie.Controls.Add(messageInterval);
-            panelSaisie.Controls.Add(message);
+            panelSaisie.Controls.Add(label2);
+            panelSaisie.Controls.Add(label);
             panelSaisie.Controls.Add(imgImprimer);
             panelSaisie.Controls.Add(imgApercu);
             panelSaisie.Location = new Point(583, 0);
@@ -113,23 +116,23 @@
             dtpDebut.Size = new Size(250, 23);
             dtpDebut.TabIndex = 4;
             // 
-            // messageInterval
+            // label2
             // 
-            messageInterval.AutoSize = true;
-            messageInterval.Location = new Point(19, 66);
-            messageInterval.Name = "messageInterval";
-            messageInterval.Size = new Size(22, 15);
-            messageInterval.TabIndex = 3;
-            messageInterval.Text = "Au";
+            label2.AutoSize = true;
+            label2.Location = new Point(19, 66);
+            label2.Name = "label2";
+            label2.Size = new Size(22, 15);
+            label2.TabIndex = 3;
+            label2.Text = "Au";
             // 
-            // message
+            // label
             // 
-            message.AutoSize = true;
-            message.Location = new Point(19, 9);
-            message.Name = "message";
-            message.Size = new Size(22, 15);
-            message.TabIndex = 2;
-            message.Text = "Du";
+            label.AutoSize = true;
+            label.Location = new Point(19, 9);
+            label.Name = "label";
+            label.Size = new Size(22, 15);
+            label.TabIndex = 2;
+            label.Text = "Du";
             // 
             // imgImprimer
             // 
@@ -155,11 +158,34 @@
             imgApercu.TabIndex = 0;
             imgApercu.TabStop = false;
             // 
+            // messageIntervale
+            // 
+            messageIntervale.AutoSize = true;
+            messageIntervale.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            messageIntervale.ForeColor = Color.Red;
+            messageIntervale.Location = new Point(34, 101);
+            messageIntervale.Name = "messageIntervale";
+            messageIntervale.Size = new Size(30, 15);
+            messageIntervale.TabIndex = 6;
+            messageIntervale.Text = "msg";
+            // 
+            // message
+            // 
+            message.AutoSize = true;
+            message.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            message.ForeColor = Color.Red;
+            message.Location = new Point(12, 80);
+            message.Name = "message";
+            message.Size = new Size(30, 15);
+            message.TabIndex = 7;
+            message.Text = "msg";
+            // 
             // FrmVisiteImpression
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1166, 647);
+            Controls.Add(message);
             Controls.Add(panelCentral);
             Icon = (Icon)resources.GetObject("$this.Icon");
             KeyPreview = true;
@@ -168,6 +194,7 @@
             Text = "FrmVisiteImpression";
             Controls.SetChildIndex(lblTitre, 0);
             Controls.SetChildIndex(panelCentral, 0);
+            Controls.SetChildIndex(message, 0);
             panelCentral.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)imgGsb).EndInit();
             panelSaisie.ResumeLayout(false);
@@ -187,10 +214,12 @@
         private Panel panelSaisie;
         private PictureBox imgImprimer;
         private PictureBox imgApercu;
-        private Label message;
+        private Label label;
         private DateTimePicker dtpFin;
         private DateTimePicker dtpDebut;
-        private Label messageInterval;
+        private Label label2;
         private PictureBox imgGsb;
+        private Label messageIntervale;
+        private Label message;
     }
 }

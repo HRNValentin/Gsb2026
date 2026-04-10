@@ -30,6 +30,14 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPraticienAjout));
             panelCentral = new Panel();
+            lblSpecialite = new Label();
+            lblType = new Label();
+            lblEmail = new Label();
+            lblTelephone = new Label();
+            lblVille = new Label();
+            lblRue = new Label();
+            lblPrenom = new Label();
+            lblNom = new Label();
             btnAjouter = new Button();
             cbxSpecialite = new ComboBox();
             cbxType = new ComboBox();
@@ -46,14 +54,6 @@
             messageTelephone = new Label();
             messageRue = new Label();
             messageNom = new Label();
-            lblNom = new Label();
-            lblPrenom = new Label();
-            lblRue = new Label();
-            lblVille = new Label();
-            lblTelephone = new Label();
-            lblEmail = new Label();
-            lblType = new Label();
-            lblSpecialite = new Label();
             panelCentral.SuspendLayout();
             SuspendLayout();
             // 
@@ -94,6 +94,78 @@
             panelCentral.Size = new Size(1017, 453);
             panelCentral.TabIndex = 13;
             // 
+            // lblSpecialite
+            // 
+            lblSpecialite.AutoSize = true;
+            lblSpecialite.Location = new Point(705, 330);
+            lblSpecialite.Name = "lblSpecialite";
+            lblSpecialite.Size = new Size(57, 15);
+            lblSpecialite.TabIndex = 23;
+            lblSpecialite.Text = "Specialite";
+            // 
+            // lblType
+            // 
+            lblType.AutoSize = true;
+            lblType.Location = new Point(73, 330);
+            lblType.Name = "lblType";
+            lblType.Size = new Size(31, 15);
+            lblType.TabIndex = 22;
+            lblType.Text = "Type";
+            // 
+            // lblEmail
+            // 
+            lblEmail.AutoSize = true;
+            lblEmail.Location = new Point(617, 222);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(36, 15);
+            lblEmail.TabIndex = 21;
+            lblEmail.Text = "Email";
+            // 
+            // lblTelephone
+            // 
+            lblTelephone.AutoSize = true;
+            lblTelephone.Location = new Point(73, 222);
+            lblTelephone.Name = "lblTelephone";
+            lblTelephone.Size = new Size(61, 15);
+            lblTelephone.TabIndex = 20;
+            lblTelephone.Text = "Telephone";
+            // 
+            // lblVille
+            // 
+            lblVille.AutoSize = true;
+            lblVille.Location = new Point(73, 151);
+            lblVille.Name = "lblVille";
+            lblVille.Size = new Size(29, 15);
+            lblVille.TabIndex = 19;
+            lblVille.Text = "Ville";
+            // 
+            // lblRue
+            // 
+            lblRue.AutoSize = true;
+            lblRue.Location = new Point(73, 83);
+            lblRue.Name = "lblRue";
+            lblRue.Size = new Size(27, 15);
+            lblRue.TabIndex = 18;
+            lblRue.Text = "Rue";
+            // 
+            // lblPrenom
+            // 
+            lblPrenom.AutoSize = true;
+            lblPrenom.Location = new Point(617, 0);
+            lblPrenom.Name = "lblPrenom";
+            lblPrenom.Size = new Size(49, 15);
+            lblPrenom.TabIndex = 17;
+            lblPrenom.Text = "Prenom";
+            // 
+            // lblNom
+            // 
+            lblNom.AutoSize = true;
+            lblNom.Location = new Point(73, 0);
+            lblNom.Name = "lblNom";
+            lblNom.Size = new Size(34, 15);
+            lblNom.TabIndex = 16;
+            lblNom.Text = "Nom";
+            // 
             // btnAjouter
             // 
             btnAjouter.BackColor = Color.Red;
@@ -124,7 +196,7 @@
             // mtbTelephone
             // 
             mtbTelephone.Location = new Point(73, 251);
-            mtbTelephone.Mask = "00 00 00 00 00 00";
+            mtbTelephone.Mask = "00 00 00 00 00";
             mtbTelephone.Name = "mtbTelephone";
             mtbTelephone.Size = new Size(196, 23);
             mtbTelephone.TabIndex = 12;
@@ -240,78 +312,6 @@
             messageNom.Size = new Size(30, 15);
             messageNom.TabIndex = 0;
             messageNom.Text = "msg";
-            // 
-            // lblNom
-            // 
-            lblNom.AutoSize = true;
-            lblNom.Location = new Point(73, 15);
-            lblNom.Name = "lblNom";
-            lblNom.Size = new Size(34, 15);
-            lblNom.TabIndex = 16;
-            lblNom.Text = "Nom";
-            // 
-            // lblPrenom
-            // 
-            lblPrenom.AutoSize = true;
-            lblPrenom.Location = new Point(617, 15);
-            lblPrenom.Name = "lblPrenom";
-            lblPrenom.Size = new Size(62, 15);
-            lblPrenom.TabIndex = 17;
-            lblPrenom.Text = "lblPrenom";
-            // 
-            // lblRue
-            // 
-            lblRue.AutoSize = true;
-            lblRue.Location = new Point(73, 92);
-            lblRue.Name = "lblRue";
-            lblRue.Size = new Size(27, 15);
-            lblRue.TabIndex = 18;
-            lblRue.Text = "Rue";
-            // 
-            // lblVille
-            // 
-            lblVille.AutoSize = true;
-            lblVille.Location = new Point(73, 163);
-            lblVille.Name = "lblVille";
-            lblVille.Size = new Size(29, 15);
-            lblVille.TabIndex = 19;
-            lblVille.Text = "Ville";
-            // 
-            // lblTelephone
-            // 
-            lblTelephone.AutoSize = true;
-            lblTelephone.Location = new Point(73, 233);
-            lblTelephone.Name = "lblTelephone";
-            lblTelephone.Size = new Size(61, 15);
-            lblTelephone.TabIndex = 20;
-            lblTelephone.Text = "Telephone";
-            // 
-            // lblEmail
-            // 
-            lblEmail.AutoSize = true;
-            lblEmail.Location = new Point(617, 233);
-            lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(36, 15);
-            lblEmail.TabIndex = 21;
-            lblEmail.Text = "Email";
-            // 
-            // lblType
-            // 
-            lblType.AutoSize = true;
-            lblType.Location = new Point(73, 343);
-            lblType.Name = "lblType";
-            lblType.Size = new Size(31, 15);
-            lblType.TabIndex = 22;
-            lblType.Text = "Type";
-            // 
-            // lblSpecialite
-            // 
-            lblSpecialite.AutoSize = true;
-            lblSpecialite.Location = new Point(705, 343);
-            lblSpecialite.Name = "lblSpecialite";
-            lblSpecialite.Size = new Size(57, 15);
-            lblSpecialite.TabIndex = 23;
-            lblSpecialite.Text = "Specialite";
             // 
             // FrmPraticienAjout
             // 

@@ -66,6 +66,7 @@
             // 
             // panel2
             // 
+            panel2.BorderStyle = BorderStyle.FixedSingle;
             panel2.Controls.Add(label5);
             panel2.Controls.Add(label4);
             panel2.Controls.Add(label3);
@@ -117,12 +118,16 @@
             btnAjouter.Text = "Ajouter";
             btnAjouter.UseVisualStyleBackColor = false;
             btnAjouter.Click += btnAjouter_Click;
-           
             // 
             // dtpDate
             // 
             dtpDate.Location = new Point(109, 149);
             dtpDate.Name = "dtpDate";
+            // Afficher la date et l'heure : utiliser un format personnalisé incluant l'heure
+            dtpDate.Format = DateTimePickerFormat.Custom;
+            dtpDate.CustomFormat = "dd/MM/yyyy HH:mm";
+            // Ne pas utiliser le contrôle up-down pour conserver le menu déroulant du calendrier
+            dtpDate.ShowUpDown = false;     // true augmente ou descend en cliquant sur les flèches, false affiche le calendrier déroulant
             dtpDate.Size = new Size(200, 23);
             dtpDate.TabIndex = 3;
             // 
@@ -178,7 +183,7 @@
             label1.Name = "label1";
             label1.Size = new Size(449, 15);
             label1.TabIndex = 0;
-            label1.Text = "Liste des rendez-vous déjà progrmmés";
+            label1.Text = "Liste des rendez-vous déjà enregistrés";
             // 
             // contextMenuStrip1
             // 

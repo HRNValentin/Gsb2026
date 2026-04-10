@@ -14,11 +14,17 @@ namespace Interface
         public FrmVisiteBilan(Session uneSession) : base(uneSession)
         {
             InitializeComponent();
+            
         }
 
         private void FrmVisiteBilan_Load(object sender, EventArgs e)
         {
-
+            centrerFormulaire();
+        }
+        private void centrerFormulaire()
+        {
+            panelCentral.Left = (this.ClientSize.Width - panelCentral.Width) / 2;
+            panelCentral.Top = (this.ClientSize.Height - panelCentral.Height) / 2;
         }
 
     }

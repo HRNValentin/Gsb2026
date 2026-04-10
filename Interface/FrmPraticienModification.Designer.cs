@@ -48,7 +48,6 @@
             cbxType = new ComboBox();
             mtbTelephone = new MaskedTextBox();
             txtEmail = new TextBox();
-            textTelephone = new TextBox();
             txtRue = new TextBox();
             txtPrenom = new TextBox();
             txtNom = new TextBox();
@@ -86,7 +85,6 @@
             panelCentral.Controls.Add(cbxType);
             panelCentral.Controls.Add(mtbTelephone);
             panelCentral.Controls.Add(txtEmail);
-            panelCentral.Controls.Add(textTelephone);
             panelCentral.Controls.Add(txtRue);
             panelCentral.Controls.Add(txtPrenom);
             panelCentral.Controls.Add(txtNom);
@@ -247,8 +245,8 @@
             // 
             // mtbTelephone
             // 
-            mtbTelephone.Location = new Point(284, 315);
-            mtbTelephone.Mask = "00 00 00 00 00 00";
+            mtbTelephone.Location = new Point(54, 306);
+            mtbTelephone.Mask = "00 00 00 00 00";
             mtbTelephone.Name = "mtbTelephone";
             mtbTelephone.Size = new Size(162, 23);
             mtbTelephone.TabIndex = 12;
@@ -259,13 +257,6 @@
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(340, 23);
             txtEmail.TabIndex = 11;
-            // 
-            // textTelephone
-            // 
-            textTelephone.Location = new Point(53, 315);
-            textTelephone.Name = "textTelephone";
-            textTelephone.Size = new Size(225, 23);
-            textTelephone.TabIndex = 10;
             // 
             // txtRue
             // 
@@ -378,7 +369,6 @@
 
         private Panel panelCentral;
         private Label messageNom;
-        private TextBox textTelephone;
         private TextBox textVille;
         private TextBox txtRue;
         private TextBox txtPrenom;

@@ -370,41 +370,8 @@ namespace Donnee
             // passer les paramètres
             cmd.Parameters.AddWithValue("_idPraticien", idPraticien);
             cmd.Parameters.AddWithValue("_idMotif", idMotif);
-            cmd.Parameters.AddWithValue("_dateEtHeur", uneDate);
+            cmd.Parameters.AddWithValue("_dateEtHeure", uneDate);
 
-            /*
-			// solution A
-			var paramSortie = new MySqlParameter("_idVisite", MySqlDbType.Int32);
-            paramSortie.Direction = ParameterDirection.Output;
-            cmd.Parameters.Add(paramSortie);
-            try
-            {
-                int rows = cmd.ExecuteNonQuery();
-                // log success
-                try
-                {
-                    Directory.CreateDirectory("Logs");
-                    string log = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] modifierPraticien id={lePraticien.Id} rows={rows} nom='{lePraticien.Nom}' prenom='{lePraticien.Prenom}'\n";
-                    File.AppendAllText(Path.Combine("Logs", "db_updates.log"), log);
-                }
-                catch { }
-            }
-            catch (Exception ex)
-            {
-                try
-                {
-                    Directory.CreateDirectory("Logs");
-                    string log = $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] ERROR modifierPraticien id={lePraticien.Id} message='{ex.Message.Replace("\n", " ")}'\n";
-                    File.AppendAllText(Path.Combine("Logs", "db_updates.log"), log);
-                }
-                catch { }
-                throw;
-            }
-            return (int) paramSortie.Value!;
-            
-            // solution B
-            return Convert.ToInt32(cmd.ExecuteScalar());
-            */
             // solution C
             cmd.ExecuteNonQuery();
             return Convert.ToInt32(cmd.LastInsertedId);
@@ -416,6 +383,14 @@ namespace Donnee
         /// <param name="idVisite">ID de la visite à supprimer</param>
         static public void supprimerRendezVous(int idVisite)
         {
+            using MySqlConnection cnx = ouvrirConnexion();
+
+            using MySqlCommand cmd = new MySqlCommand("supprimerRendezVous", cnx);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("_idVisite", idVisite);
+
+            cmd.ExecuteNonQuery();
         }
 
         /// <summary>
@@ -425,6 +400,15 @@ namespace Donnee
         /// <param name="uneDateEtHeure">Nouvelle date et heure</param>
         static public void modifierRendezVous(int idVisite, DateTime uneDateEtHeure)
         {
+            using MySqlConnection cnx = ouvrirConnexion();
+
+            using MySqlCommand cmd = new MySqlCommand("modifierRendezVous", cnx);
+            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("_idVisite", idVisite);
+            cmd.Parameters.AddWithValue("_dateEtHeure", uneDateEtHeure);
+
+            cmd.ExecuteNonQuery();
 
         }
 

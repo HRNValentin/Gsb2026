@@ -34,9 +34,9 @@
             dateTimePicker2 = new DateTimePicker();
             dateTimePicker1 = new DateTimePicker();
             label5 = new Label();
-            label4 = new Label();
+            lblDate = new Label();
             label3 = new Label();
-            label2 = new Label();
+            lblNom = new Label();
             label1 = new Label();
             panel3 = new Panel();
             dataGridView1 = new DataGridView();
@@ -56,9 +56,9 @@
             panel2.Controls.Add(dateTimePicker2);
             panel2.Controls.Add(dateTimePicker1);
             panel2.Controls.Add(label5);
-            panel2.Controls.Add(label4);
+            panel2.Controls.Add(lblDate);
             panel2.Controls.Add(label3);
-            panel2.Controls.Add(label2);
+            panel2.Controls.Add(lblNom);
             panel2.Controls.Add(label1);
             panel2.Dock = DockStyle.Right;
             panel2.Location = new Point(463, 98);
@@ -101,16 +101,16 @@
             label5.TabIndex = 4;
             label5.Text = "est remis au ";
             // 
-            // label4
+            // lblDate
             // 
-            label4.AutoSize = true;
-            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(28, 133);
-            label4.Name = "label4";
-            label4.Size = new Size(171, 15);
-            label4.TabIndex = 3;
-            label4.Text = "date et heure du rendez vous";
-            label4.Click += label4_Click;
+            lblDate.AutoSize = true;
+            lblDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblDate.Location = new Point(28, 133);
+            lblDate.Name = "lblDate";
+            lblDate.Size = new Size(171, 15);
+            lblDate.TabIndex = 3;
+            lblDate.Text = "date et heure du rendez vous";
+            lblDate.Click += label4_Click;
             // 
             // label3
             // 
@@ -121,15 +121,15 @@
             label3.TabIndex = 2;
             label3.Text = "prévu initiallement le";
             // 
-            // label2
+            // lblNom
             // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.Location = new Point(28, 52);
-            label2.Name = "label2";
-            label2.Size = new Size(103, 15);
-            label2.TabIndex = 1;
-            label2.Text = "Nom du praticien";
+            lblNom.AutoSize = true;
+            lblNom.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblNom.Location = new Point(28, 52);
+            lblNom.Name = "lblNom";
+            lblNom.Size = new Size(103, 15);
+            lblNom.TabIndex = 1;
+            lblNom.Text = "Nom du praticien";
             // 
             // label1
             // 
@@ -200,9 +200,9 @@
 
         private Panel panel2;
         private Label label5;
-        private Label label4;
+        private Label lblDate;
         private Label label3;
-        private Label label2;
+        private Label lblNom;
         private Label label1;
         private Panel panel3;
         private Button button1;

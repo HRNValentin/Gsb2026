@@ -13,6 +13,35 @@ namespace Interface
 {
     public partial class FrmPraticienModification : FrmBase
     {
+        // copie locale de la liste des praticiens pour gérer le filtrage "contains"
+        private List<Praticien> tousLesPraticiens = new List<Praticien>();
+
+        // Remet à jour le DataSource du ComboBox à partir de la liste complète
+        private void RefreshPraticienDataSource(int selectedIndex = -1)
+        {
+            // binder une copie pour éviter d'exposer la collection interne
+            cbxPraticien.DataSource = new BindingSource(tousLesPraticiens.ToList(), null);
+            cbxPraticien.DisplayMember = "NomPrenom";
+            if (selectedIndex >= 0 && cbxPraticien.Items.Count > 0)
+            {
+                // ajuster l'index si nécessaire
+                if (selectedIndex >= cbxPraticien.Items.Count)
+                    selectedIndex = cbxPraticien.Items.Count - 1;
+                cbxPraticien.SelectedIndex = selectedIndex;
+            }
+        }
+
+        // Filtre les praticiens dont le NomPrenom contient la chaîne fournie (insensible à la casse)
+        private void FiltrerPraticiens(string filtre)
+        {
+            var liste = string.IsNullOrWhiteSpace(filtre)
+                ? tousLesPraticiens
+                : tousLesPraticiens.Where(p => p.NomPrenom.IndexOf(filtre, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
+            cbxPraticien.DataSource = new BindingSource(liste.ToList(), null);
+            cbxPraticien.DisplayMember = "NomPrenom";
+            if (liste.Count == 0)
+                panelCentral.Visible = false;
+        }
         public FrmPraticienModification(Session uneSession) : base(uneSession)
         {
             InitializeComponent();
@@ -87,14 +116,14 @@ namespace Interface
 
             // Liste des praticiens : configuration et remplissage
             cbxPraticien.DisplayMember = "NomPrenom";
-            cbxPraticien.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            cbxPraticien.AutoCompleteSource = AutoCompleteSource.ListItems;
+            // on gère l'auto-complétion par filtrage "contains" personnalisé
+            cbxPraticien.AutoCompleteMode = AutoCompleteMode.None;
+            cbxPraticien.AutoCompleteSource = AutoCompleteSource.None;
             cbxPraticien.DropDownStyle = ComboBoxStyle.DropDown;
 
-            foreach (var p in session.MesPraticiens)
-            {
-                cbxPraticien.Items.Add(p);
-            }
+            // garder une copie complète et la binder
+            tousLesPraticiens = session.MesPraticiens.ToList();
+            RefreshPraticienDataSource();
             // masquer les messages d'erreur au démarrage
             messageNom.Text = string.Empty;
             messagePrenom.Text = string.Empty;
@@ -105,6 +134,8 @@ namespace Interface
             messageNom.Visible = messagePrenom.Visible = messageRue.Visible = messageVille.Visible = messageEmail.Visible = messageTelephone.Visible = false;
 
             // connecter les événements runtime
+            // filtrage en temps réel lorsque l'utilisateur tape
+            cbxPraticien.TextChanged += (s, e) => FiltrerPraticiens(cbxPraticien.Text);
             cbxPraticien.SelectedIndexChanged += (s, e) => {
                 if (cbxPraticien.SelectedItem != null)
                     remplirPraticien((Praticien)cbxPraticien.SelectedItem);
@@ -151,10 +182,11 @@ namespace Interface
                 // Enregistrement via la passerelle
                 Passerelle.modifierPraticien(lePraticien);
 
-                // Rafraîchissement visuel du ComboBox pour refléter les changements (ex: Nom/Prénom modifié)
-                int currentIndex = cbxPraticien.SelectedIndex;
-                cbxPraticien.SelectedIndex = -1;
-                cbxPraticien.SelectedIndex = currentIndex;
+                // Mettre à jour la copie locale et rafraîchir le DataSource pour refléter les changements
+                int currentIndex = tousLesPraticiens.FindIndex(p => p.Id == lePraticien.Id);
+                if (currentIndex >= 0)
+                    tousLesPraticiens[currentIndex] = lePraticien;
+                RefreshPraticienDataSource(currentIndex);
 
                 MessageBox.Show("Les coordonnées du praticien ont été modifiées", "Modification coordonnées d'un praticien", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -187,8 +219,11 @@ namespace Interface
                 session!.MesPraticiens.Remove(lePraticien);
                 panelCentral.Visible = false;
 
-                int index = cbxPraticien.SelectedIndex;
-                cbxPraticien.Items.Remove(lePraticien);
+                // Mise à jour de la liste locale et du DataSource
+                int index = tousLesPraticiens.FindIndex(p => p.Id == lePraticien.Id);
+                if (index >= 0)
+                    tousLesPraticiens.RemoveAt(index);
+                RefreshPraticienDataSource();
 
                 // Recalcul de l'index pour sélectionner le praticien suivant ou précédent
                 if (index >= cbxPraticien.Items.Count)
